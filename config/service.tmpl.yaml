@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{loadbalancer}}
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: {{httpport}}
+    protocol: TCP
+    targetPort: {{httpport}}
+  - name: grpc
+    port: {{grpcport}}
+    protocol: TCP
+    targetPort: {{grpcport}}
+  selector:
+    app: {{httpapp}}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{clusterip}}
+spec:
+  type: ClusterIP
+  ports:
+  - name: cluster-ip
+    port: {{grpcport}}
+    protocol: TCP
+    targetPort: {{grpcport}}
+  selector:
+    app: {{grpcapp}}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{headless}}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: headless
+    port: {{grpcport}}
+    protocol: TCP
+    targetPort: {{grpcport}}
+  selector:
+    app: {{grpcapp}}

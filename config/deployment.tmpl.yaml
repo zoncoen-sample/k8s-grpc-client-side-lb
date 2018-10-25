@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{appname}}-deployment
+  labels:
+    app: {{appname}}
+spec:
+  replicas: {{replicas}}
+  selector:
+    matchLabels:
+      app: {{appname}}
+  template:
+    metadata:
+      labels:
+        app: {{appname}}
+      annotations:
+        revision: "{{revision}}"
+    spec:
+      containers:
+      - name: {{appname}}
+        image: {{image}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{httpport}}
+        - containerPort: {{grpcport}}
+        env:
+        - name: HTTP_PORT
+          value: :{{httpport}}
+        - name: GRPC_PORT
+          value: :{{grpcport}}
+        - name: CLUSTER_IP_SERVICE
+          value: {{clusterip}}:{{grpcport}}
+        - name: HEADLESS_SERVICE
+          value: {{headless}}:{{grpcport}}

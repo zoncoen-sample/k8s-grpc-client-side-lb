@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package github.com.zoncoen_sample.k8s_grpc_client_side_lb.information;
+
+service Information {
+    rpc GetHostname(GetHostnameRequest) returns (GetHostnameResponse) {
+    }
+}
+
+message GetHostnameRequest {
+}
+
+message GetHostnameResponse {
+    string hostname = 1;
+}
